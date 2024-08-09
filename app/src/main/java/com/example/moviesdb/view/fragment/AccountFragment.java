@@ -8,10 +8,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.moviesdb.databinding.FragmentNotificationsBinding;
-import com.example.moviesdb.viewmodel.AccountViewModel;
 
 public class AccountFragment extends Fragment {
 
@@ -19,14 +17,11 @@ public class AccountFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        AccountViewModel accountViewModel =
-                new ViewModelProvider(this).get(AccountViewModel.class);
 
         binding = FragmentNotificationsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         final TextView textView = binding.textNotifications;
-        accountViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 
