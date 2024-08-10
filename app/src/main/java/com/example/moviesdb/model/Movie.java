@@ -18,12 +18,14 @@ public class Movie {
     private String Awards;
     private String Poster;
     private List<Rating> Ratings;
+    private String imdbID;
 
     // Constructors
-    public Movie(String title, String year, String poster) {
+    public Movie(String title, String year, String poster, String imdb_id) {
         this.Title = title;
         this.Year = year;
         this.Poster = poster;
+        this.imdbID = imdb_id;
     }
 
     public Movie(String title, String year, String rated, String released, String runtime, String genre, String director,
@@ -159,6 +161,8 @@ public class Movie {
     public void setPoster(String poster) {
         Poster = poster;
     }
+    public String getimdbID() { return imdbID; };
+    public void setimdbID(String id) { imdbID = id; };
 
     public List<Rating> getRatings() {
         return Ratings;
@@ -195,4 +199,5 @@ public class Movie {
             Value = value;
         }
     }
+
 }

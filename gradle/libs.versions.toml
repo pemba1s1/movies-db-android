@@ -15,6 +15,7 @@ navigationUi = "2.7.7"
 okhttpBom = "4.12.0"
 firebaseFirestore = "25.0.0"
 picasso = "2.8"
+activity = "1.9.1"
 
 [libraries]
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
@@ -34,6 +35,7 @@ okhttp = { module = "com.squareup.okhttp3:okhttp" }
 okhttp-bom = { module = "com.squareup.okhttp3:okhttp-bom", version.ref = "okhttpBom" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
 picasso = { module = "com.squareup.picasso:picasso", version.ref = "picasso" }
+activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

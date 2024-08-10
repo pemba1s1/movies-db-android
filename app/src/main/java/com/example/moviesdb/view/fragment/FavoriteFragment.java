@@ -8,16 +8,16 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.example.moviesdb.databinding.FragmentDashboardBinding;
+import com.example.moviesdb.databinding.FragmentFavoriteBinding;
 
 public class FavoriteFragment extends Fragment {
 
-    private FragmentDashboardBinding binding;
+    private FragmentFavoriteBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        binding = FragmentDashboardBinding.inflate(inflater, container, false);
+        binding = FragmentFavoriteBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         return root;

@@ -11,23 +11,31 @@ import java.util.List;
 public class MovieViewModel extends ViewModel {
     private final MutableLiveData<String> mSearch;
     private final MutableLiveData<List<Movie>> mMovieList;
+    private final MutableLiveData<String> mMovieId;
+    private final MutableLiveData<Movie> mMovieDetail;
 
     public MovieViewModel() {
         mSearch = new MutableLiveData<String>();
         mMovieList = new MutableLiveData<List<Movie>>();
+        mMovieId = new MutableLiveData<String>();
+        mMovieDetail = new MutableLiveData<Movie>();
     }
-
     public LiveData<String> getSearchQuery() {
         return mSearch;
     }
-
     public LiveData<List<Movie>> getMovieList() { return mMovieList; }
-
+    public LiveData<Movie> getMovieDetail() { return mMovieDetail; }
+    public LiveData<String> getMovieId() {
+        return mMovieId;
+    }
     public void setSearchQuery (String query) {
         mSearch.setValue(query);
     }
-
     public void setMovieList (List<Movie> movieList) {
         mMovieList.setValue(movieList);
+    }
+    public void setMovieDetail (Movie movieDetail) { mMovieDetail.setValue(movieDetail); }
+    public void setMovieId (String id) {
+        mMovieId.setValue(id);
     }
 }

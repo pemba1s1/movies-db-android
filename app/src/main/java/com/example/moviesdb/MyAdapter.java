@@ -37,7 +37,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         Movie movie = movieList.get(position);
 
         holder.title.setText(movie.getTitle());
-        holder.description.setText(movie.getYear());
+        holder.year.setText(movie.getYear());
         Picasso.get().load(movie.getPoster()).into(holder.image);
     }
 
@@ -47,12 +47,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener  {
         TextView title;
-        TextView description;
+        TextView year;
         ImageView image;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.title_txt);
-            description = itemView.findViewById(R.id.description_text);
+            year = itemView.findViewById(R.id.year);
             image = itemView.findViewById(R.id.imageview);
             itemView.setOnClickListener(this);
         }
