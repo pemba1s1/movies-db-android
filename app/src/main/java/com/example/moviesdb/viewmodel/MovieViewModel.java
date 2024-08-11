@@ -10,15 +10,18 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.moviesdb.BuildConfig;
 import com.example.moviesdb.model.Movie;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,7 +43,10 @@ public class MovieViewModel extends ViewModel {
     private final MutableLiveData<String> mMovieId;
     private final MutableLiveData<Movie> mMovieDetail;
     private final MutableLiveData<Boolean> isLoadingLiveData;
+    private final MutableLiveData<List<Movie>> mFavoriteMovieList;
     private final OkHttpClient client = new OkHttpClient();
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final CollectionReference collectionReference = db.collection("Favourite");
     private Integer page = 1;
 
     public MovieViewModel() {
@@ -50,6 +56,7 @@ public class MovieViewModel extends ViewModel {
         mMovieDetail = new MutableLiveData<>();
         isLoadingLiveData = new MutableLiveData<>();
         mFetchedMovieList = new MutableLiveData<>();
+        mFavoriteMovieList = new MutableLiveData<>();
     }
     public LiveData<String> getSearchQuery() {
         return mSearch;
@@ -60,8 +67,8 @@ public class MovieViewModel extends ViewModel {
     public LiveData<String> getMovieId() {
         return mMovieId;
     }
-    public LiveData<Boolean> getIsLoading() {
-        return isLoadingLiveData;
+    public LiveData<List<Movie>> getFavoriteMovieList() {
+        return mFavoriteMovieList;
     }
     public void setSearchQuery (String query) {
         if (query.isEmpty()) {
@@ -69,14 +76,10 @@ public class MovieViewModel extends ViewModel {
         }
         mSearch.setValue(query);
     }
-    public void setMovieList (List<Movie> movieList) {
-        mMovieList.setValue(movieList);
-    }
     public void setMovieDetail (Movie movieDetail) { mMovieDetail.setValue(movieDetail); }
     public void setMovieId (String id) {
         mMovieId.setValue(id);
     }
-
     private void makeRequest (String url, MovieListCallback callback) {
         if (Boolean.TRUE.equals(isLoadingLiveData.getValue()) || Objects.requireNonNull(mSearch.getValue()).isEmpty()) {
             return;
@@ -95,7 +98,6 @@ public class MovieViewModel extends ViewModel {
                     final String responseData = response.body().string();
                     try {
                         JSONObject json = new JSONObject(responseData);
-                        JSONArray jsonArray = new JSONArray(json.getString("Search"));
                         Gson gson = new Gson();
                         Type movieListType = new TypeToken<List<Movie>>() {}.getType();
                         List<Movie> movies = gson.fromJson(json.getString("Search"), movieListType);
@@ -136,6 +138,7 @@ public class MovieViewModel extends ViewModel {
             @Override
             public void onSuccess(List<Movie> movies) {
                 List<Movie> currentMovies = mMovieList.getValue();
+                assert currentMovies != null;
                 currentMovies.addAll(movies);
                 mMovieList.postValue(currentMovies);
                 mFetchedMovieList.postValue(new Pair<>(movies, false));
@@ -144,6 +147,17 @@ public class MovieViewModel extends ViewModel {
             public void onFailure(Exception e) {
 
             }
+        });
+    }
+    public void fetchFavoriteMovies() {
+        List<Movie> favMovieList = new ArrayList<>();
+        collectionReference.get().addOnSuccessListener(task -> {
+            for (QueryDocumentSnapshot document : task) {
+                System.out.println(document);
+                Movie movie = document.toObject(Movie.class);
+                favMovieList.add(movie);
+            }
+            mFavoriteMovieList.postValue(favMovieList);
         });
     }
 }

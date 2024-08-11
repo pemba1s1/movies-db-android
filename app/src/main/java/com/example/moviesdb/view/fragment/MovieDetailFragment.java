@@ -40,18 +40,36 @@ import okhttp3.Response;
  * create an instance of this fragment.
  */
 public class MovieDetailFragment extends Fragment {
+    private interface IsFavoriteCallback {
+        void onSuccess(boolean isFavorite, DocumentReference ref);
+    }
     FragmentMovieDetailBinding binding;
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private DocumentReference ref = db.collection("Users").document("Friends");
-    private CollectionReference collectionReference = db.collection("Users");
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final CollectionReference collectionReference = db.collection("Favourite");
     private final OkHttpClient client = new OkHttpClient();
     MovieViewModel viewModel;
-    private String movieId;
-    public void setMovieId (String id) {
-        this.movieId = id;
+    private Movie movieDetail;
+    private void addFavorite (Movie movie) {
+        collectionReference.add(movie).addOnSuccessListener( documentReference -> binding.favBtn.setOnClickListener(v -> removeFavorite(documentReference)));
+        binding.favBtn.setText("Remove from Favourites");
+    }
+    private void removeFavorite(DocumentReference ref) {
+        ref.delete();
+        binding.favBtn.setText("Add to Favourites");
+        binding.favBtn.setOnClickListener(v -> addFavorite(this.movieDetail));
+    }
+    private void isFavorite(String id, IsFavoriteCallback callback) {
+        collectionReference.whereEqualTo("imdbID", id).get().addOnSuccessListener(task -> {
+            if (!task.isEmpty()) {
+                DocumentReference ref = task.getDocuments().get(0).getReference();
+                callback.onSuccess(true, ref);
+            } else {
+                callback.onSuccess(false, null);
+            }
+        });
     }
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentMovieDetailBinding.inflate(getLayoutInflater());
@@ -64,6 +82,16 @@ public class MovieDetailFragment extends Fragment {
             if (movieDetails == null) {
                 return;
             }
+            this.movieDetail = movieDetails;
+            isFavorite(movieDetails.getimdbID(), (isFavorite, ref) -> {
+                if (isFavorite) {
+                    binding.favBtn.setText("Remove from Favourites");
+                    binding.favBtn.setOnClickListener(v -> removeFavorite(ref));
+                } else {
+                    binding.favBtn.setText("Add to Favourites");
+                    binding.favBtn.setOnClickListener(v -> addFavorite(movieDetails));
+                }
+            });
             binding.progressBar.setVisibility(View.GONE);
             binding.detailLayout.setVisibility(View.VISIBLE);
             binding.titleTxt.setText(movieDetails.getTitle());
@@ -100,12 +128,7 @@ public class MovieDetailFragment extends Fragment {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                requireActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        makeText(requireActivity(), "Failed to fetch data", LENGTH_SHORT).show();
-                    }
-                });
+                requireActivity().runOnUiThread(() -> makeText(requireActivity(), "Failed to fetch data", LENGTH_SHORT).show());
             }
 
             @Override
@@ -113,13 +136,10 @@ public class MovieDetailFragment extends Fragment {
                 if (response.isSuccessful()) {
                     assert response.body() != null;
                     final String responseData = response.body().string();
-                    requireActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Gson gson = new Gson();
-                            Movie movieData = gson.fromJson(responseData, Movie.class);
-                            viewModel.setMovieDetail(movieData);
-                        }
+                    requireActivity().runOnUiThread(() -> {
+                        Gson gson = new Gson();
+                        Movie movieData = gson.fromJson(responseData, Movie.class);
+                        viewModel.setMovieDetail(movieData);
                     });
                 }
             }

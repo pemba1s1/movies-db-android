@@ -33,7 +33,6 @@ public class HomeFragment extends Fragment implements ItemClickListener {
     private MyAdapter adapter;
     private LinearLayoutManager layoutManager;
 
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         viewModel = new ViewModelProvider(requireActivity()).get(MovieViewModel.class);

@@ -20,6 +20,7 @@ public class Movie {
     private List<Rating> Ratings;
     private String imdbID;
 
+    public Movie() {}
     // Constructors
     public Movie(String title, String year, String poster, String imdb_id) {
         this.Title = title;

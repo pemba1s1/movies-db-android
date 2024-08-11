@@ -6,13 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#283339">
-    
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/detail_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
-        >
+        android:visibility="visible">
+
         <ImageView
             android:id="@+id/imageview"
             android:layout_width="120dp"
@@ -39,12 +39,12 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:textColor="@color/white"
             android:id="@+id/yearLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:text="Release Data:"
+            android:textColor="@color/white"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/title_txt"
             app:layout_constraintTop_toBottomOf="@+id/title_txt" />
@@ -62,19 +62,19 @@
             app:layout_constraintTop_toBottomOf="@+id/title_txt" />
 
         <TextView
-            android:textColor="@color/white"
             android:id="@+id/directorLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:text="Director:"
+            android:textColor="@color/white"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/title_txt"
             app:layout_constraintTop_toBottomOf="@+id/yearLabel" />
 
         <TextView
             android:id="@+id/director"
-            android:layout_width="wrap_content"
+            android:layout_width="180dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginTop="6dp"
@@ -85,12 +85,12 @@
             app:layout_constraintTop_toBottomOf="@+id/yearLabel" />
 
         <TextView
-            android:textColor="@color/white"
             android:id="@+id/genreLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:text="Genre:"
+            android:textColor="@color/white"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="@+id/title_txt"
             app:layout_constraintTop_toBottomOf="@+id/directorLabel" />
@@ -111,85 +111,89 @@
             android:id="@+id/favBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Add to Favorite"
-            app:layout_constraintStart_toStartOf="@+id/imageview"
-            app:layout_constraintTop_toBottomOf="@+id/imageview"
-            android:layout_marginTop="6dp"
             android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"/>
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="24dp"
+            app:layout_constraintStart_toStartOf="@+id/imageview"
+            app:layout_constraintTop_toBottomOf="@+id/imageview" />
 
         <GridLayout
-            android:layout_width="351dp"
             android:id="@+id/rating"
+            android:layout_width="351dp"
             android:layout_height="wrap_content"
-            android:rowCount="2"
-            android:columnCount="3"
-            tools:layout_editor_absoluteX="59dp"
-            tools:layout_editor_absoluteY="179dp"
             android:layout_marginTop="6dp"
+            android:columnCount="3"
+            android:rowCount="2"
             app:layout_constraintStart_toStartOf="@+id/imageview"
-            app:layout_constraintTop_toBottomOf="@+id/favBtn">
+            app:layout_constraintTop_toBottomOf="@+id/favBtn"
+            tools:layout_editor_absoluteX="59dp"
+            tools:layout_editor_absoluteY="179dp">
 
             <TextView
                 android:id="@+id/rating1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_row="0"
+                android:layout_column="0"
+                android:layout_columnWeight="1"
                 android:text="IMDB"
                 android:textAlignment="center"
-                android:layout_columnWeight="1"
-                android:textColor="@color/white"
-                android:layout_row="0"
-                android:layout_column="0"/>
+                android:textColor="@color/white" />
+
             <TextView
                 android:id="@+id/rating2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_row="0"
+                android:layout_column="1"
+                android:layout_columnWeight="1"
                 android:text="Rotten Tomato"
                 android:textAlignment="center"
-                android:layout_columnWeight="1"
-                android:textColor="@color/white"
-                android:layout_row="0"
-                android:layout_column="1"/>
+                android:textColor="@color/white" />
+
             <TextView
                 android:id="@+id/rating3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_row="0"
+                android:layout_column="2"
+                android:layout_columnWeight="1"
                 android:text="Metacritic"
                 android:textAlignment="center"
-                android:layout_columnWeight="1"
-                android:textColor="@color/white"
-                android:layout_row="0"
-                android:layout_column="2"/>
+                android:textColor="@color/white" />
+
             <TextView
                 android:id="@+id/rating1Value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_row="1"
+                android:layout_column="0"
+                android:layout_columnWeight="1"
                 android:text="IMDB"
                 android:textAlignment="center"
-                android:layout_columnWeight="1"
-                android:textColor="@color/white"
-                android:layout_row="1"
-                android:layout_column="0"/>
+                android:textColor="@color/white" />
+
             <TextView
                 android:id="@+id/rating2Value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_row="1"
+                android:layout_column="1"
+                android:layout_columnWeight="1"
                 android:text="Rotten Tomato"
                 android:textAlignment="center"
-                android:layout_columnWeight="1"
-                android:textColor="@color/white"
-                android:layout_row="1"
-                android:layout_column="1"/>
+                android:textColor="@color/white" />
+
             <TextView
                 android:id="@+id/rating3Value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_row="1"
+                android:layout_column="2"
+                android:layout_columnWeight="1"
                 android:text="Metacritic"
                 android:textAlignment="center"
-                android:layout_columnWeight="1"
-                android:textColor="@color/white"
-                android:layout_row="1"
-                android:layout_column="2"/>
+                android:textColor="@color/white" />
 
         </GridLayout>
 
@@ -199,9 +203,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:text="Summary"
+            android:textColor="@color/white"
             android:textSize="22sp"
             android:textStyle="bold"
-            android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rating" />
@@ -212,8 +216,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="TextView"
-            android:textSize="16sp"
             android:textColor="@color/white"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/plotLabel" />
@@ -224,9 +228,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:text="Cast"
+            android:textColor="@color/white"
             android:textSize="22sp"
             android:textStyle="bold"
-            android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/plot" />
@@ -237,8 +241,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="TextView"
-            android:textSize="16sp"
             android:textColor="@color/white"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/castLabel" />
