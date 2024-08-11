@@ -70,7 +70,6 @@ public class HomeFragment extends Fragment implements ItemClickListener {
                 super.onScrolled(recyclerView, dx, dy);
                 if (!isLoading) {
                     isLoading = true;
-                    LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
                     int visibleItemCount = layoutManager.getChildCount();
                     int totalItemCount = layoutManager.getItemCount();
                     int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
