@@ -1,7 +1,5 @@
 package com.example.moviesdb.viewmodel;
 
-import static android.widget.Toast.LENGTH_SHORT;
-import static android.widget.Toast.makeText;
 
 import android.util.Pair;
 
@@ -12,7 +10,6 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.moviesdb.BuildConfig;
 import com.example.moviesdb.model.Movie;
-import com.example.moviesdb.view.MainActivity;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -47,12 +44,12 @@ public class MovieViewModel extends ViewModel {
     private Integer page = 1;
 
     public MovieViewModel() {
-        mSearch = new MutableLiveData<String>("Superman");
-        mMovieList = new MutableLiveData<List<Movie>>();
-        mMovieId = new MutableLiveData<String>();
-        mMovieDetail = new MutableLiveData<Movie>();
-        isLoadingLiveData = new MutableLiveData<Boolean>();
-        mFetchedMovieList = new MutableLiveData<Pair<List<Movie>, Boolean>>();
+        mSearch = new MutableLiveData<>("Superman");
+        mMovieList = new MutableLiveData<>();
+        mMovieId = new MutableLiveData<>();
+        mMovieDetail = new MutableLiveData<>();
+        isLoadingLiveData = new MutableLiveData<>();
+        mFetchedMovieList = new MutableLiveData<>();
     }
     public LiveData<String> getSearchQuery() {
         return mSearch;

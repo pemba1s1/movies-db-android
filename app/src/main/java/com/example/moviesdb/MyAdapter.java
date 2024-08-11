@@ -73,7 +73,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
 
     // Abstract base class for both ViewHolders
-    public abstract class MyViewHolder extends RecyclerView.ViewHolder {
+    public abstract static class MyViewHolder extends RecyclerView.ViewHolder {
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
         }
@@ -100,7 +100,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         }
     }
 
-    public class LoadingViewHolder extends MyViewHolder {
+    public static class LoadingViewHolder extends MyViewHolder {
         public LoadingViewHolder(@NonNull View itemView) {
             super(itemView);
         }

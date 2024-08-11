@@ -1,23 +1,14 @@
 package com.example.moviesdb.view;
 
-import static android.widget.Toast.LENGTH_SHORT;
-import static android.widget.Toast.makeText;
 
 import android.os.Bundle;
-import android.util.JsonReader;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
-import com.example.moviesdb.BuildConfig;
-import com.example.moviesdb.ItemClickListener;
 import com.example.moviesdb.R;
-import com.example.moviesdb.model.Movie;
 import com.example.moviesdb.viewmodel.MovieViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.ViewModelProvider;
@@ -27,35 +18,10 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.moviesdb.databinding.ActivityMainBinding;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
-
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private DocumentReference ref = db.collection("Users").document("Friends");
-    private CollectionReference collectionReference = db.collection("Users");
-    private final OkHttpClient client = new OkHttpClient();
     MovieViewModel viewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
