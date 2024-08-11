@@ -22,6 +22,7 @@ import com.example.moviesdb.databinding.FragmentHomeBinding;
 import com.example.moviesdb.model.Movie;
 import com.example.moviesdb.viewmodel.MovieViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment implements ItemClickListener {
@@ -38,6 +39,9 @@ public class HomeFragment extends Fragment implements ItemClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         viewModel = new ViewModelProvider(requireActivity()).get(MovieViewModel.class);
+
+        viewModel.setSearchQuery("Superman");
+        viewModel.searchMovie("Superman");
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         navController = NavHostFragment.findNavController(this);
@@ -49,12 +53,13 @@ public class HomeFragment extends Fragment implements ItemClickListener {
         binding.recyclerView.setVisibility(View.GONE);
         viewModel.getFetchedMovieList().observe(getViewLifecycleOwner(), fetchedMovieList -> {
             if (fetchedMovieList.second) {
+                this.fetchedMovieList = new ArrayList<>();
                 adapter = new MyAdapter();
                 binding.recyclerView.setAdapter(adapter);
                 adapter.setClickListener(this);
             }
-            this.fetchedMovieList = fetchedMovieList.first;
-            adapter.addItems(this.fetchedMovieList);
+            this.fetchedMovieList.addAll(fetchedMovieList.first);
+            adapter.addItems(fetchedMovieList.first);
             binding.progressBar.setVisibility(View.GONE);
             binding.recyclerView.setVisibility(View.VISIBLE);
         });
