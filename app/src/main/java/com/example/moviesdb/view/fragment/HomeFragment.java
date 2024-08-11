@@ -28,12 +28,12 @@ public class HomeFragment extends Fragment implements ItemClickListener {
 
     private FragmentHomeBinding binding;
     RecyclerView recyclerView;
-
-    List<Movie> movieList;
-
-    MyAdapter myAdapter;
+    List<Movie> fetchedMovieList;
     MovieViewModel viewModel;
     NavController navController;
+    private boolean isLoading = false;
+    private MyAdapter adapter;
+    private LinearLayoutManager layoutManager;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -41,17 +41,45 @@ public class HomeFragment extends Fragment implements ItemClickListener {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         navController = NavHostFragment.findNavController(this);
+
+        layoutManager = new LinearLayoutManager(requireActivity());
+        binding.recyclerView.setLayoutManager(layoutManager);
+        adapter = new MyAdapter();
+        adapter.setClickListener(this);
+        binding.recyclerView.setAdapter(adapter);
+
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerView.setVisibility(View.GONE);
-        viewModel.getMovieList().observe(getViewLifecycleOwner(), movieList -> {
-            this.movieList = movieList;
-            LinearLayoutManager layoutManager = new LinearLayoutManager(requireActivity());
-            binding.recyclerView.setLayoutManager(layoutManager);
-            myAdapter = new MyAdapter(movieList);
-            binding.recyclerView.setAdapter(myAdapter);
-            myAdapter.setClickListener(this);
+        viewModel.getFetchedMovieList().observe(getViewLifecycleOwner(), fetchedMovieList -> {
+            if (fetchedMovieList.second) {
+                adapter = new MyAdapter();
+                binding.recyclerView.setAdapter(adapter);
+            }
+            this.fetchedMovieList = fetchedMovieList.first;
+            adapter.addItems(this.fetchedMovieList);
             binding.progressBar.setVisibility(View.GONE);
             binding.recyclerView.setVisibility(View.VISIBLE);
+        });
+
+        binding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (!isLoading) {
+                    isLoading = true;
+                    LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                    int visibleItemCount = layoutManager.getChildCount();
+                    int totalItemCount = layoutManager.getItemCount();
+                    int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
+
+                    if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                            && firstVisibleItemPosition >= 0) {
+                        adapter.setLoading(true);
+                        viewModel.loadMore(); // Load more data
+                    }
+                    isLoading = false;
+                }
+            }
         });
         return root;
     }
@@ -64,8 +92,8 @@ public class HomeFragment extends Fragment implements ItemClickListener {
 
     @Override
     public void onCLick(View v, int pos) {
-        String id = movieList.get(pos).getimdbID();
-        viewModel.setMovieId(movieList.get(pos).getimdbID());
+        String id = fetchedMovieList.get(pos).getimdbID();
+        viewModel.setMovieId(fetchedMovieList.get(pos).getimdbID());
         navController.navigate(R.id.navigation_moviedetails);
     }
 

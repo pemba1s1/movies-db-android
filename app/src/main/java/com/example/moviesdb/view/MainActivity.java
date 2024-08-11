@@ -57,46 +57,6 @@ public class MainActivity extends AppCompatActivity {
     private CollectionReference collectionReference = db.collection("Users");
     private final OkHttpClient client = new OkHttpClient();
     MovieViewModel viewModel;
-    private void searchMovie (String searchQuery) {
-        System.out.println("Searching");
-        String apiKey = BuildConfig.API_KEY;
-        String url = "https://www.omdbapi.com/?apikey=" + apiKey + "&type=movie&s=" + searchQuery;
-        Request request = new Request.Builder().url(url).build();
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        makeText(MainActivity.this, "Failed to fetch data", LENGTH_SHORT).show();
-                    }
-                });
-            }
-
-            @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    assert response.body() != null;
-                    final String responseData = response.body().string();
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                JSONObject json = new JSONObject(responseData);
-                                JSONArray jsonArray = new JSONArray(json.getString("Search"));
-                                Gson gson = new Gson();
-                                Type movieListType = new TypeToken<List<Movie>>() {}.getType();
-                                List<Movie> movies = gson.fromJson(json.getString("Search"), movieListType);
-                                viewModel.setMovieList(movies);
-                            } catch (JSONException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                    });
-                }
-            }
-        });
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,7 +74,8 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
-        searchMovie("Superman");
+        viewModel.setSearchQuery("Superman");
+        viewModel.searchMovie("Superman");
     }
 
     @Override
@@ -126,7 +87,11 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                searchMovie(query);
+                if (query.isEmpty()) {
+                    return false;
+                }
+                viewModel.setSearchQuery(query);
+                viewModel.searchMovie(query);
                 return false;
             }
 
