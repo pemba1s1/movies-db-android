@@ -44,9 +44,6 @@ public class HomeFragment extends Fragment implements ItemClickListener {
 
         layoutManager = new LinearLayoutManager(requireActivity());
         binding.recyclerView.setLayoutManager(layoutManager);
-        adapter = new MyAdapter();
-        adapter.setClickListener(this);
-        binding.recyclerView.setAdapter(adapter);
 
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerView.setVisibility(View.GONE);
@@ -54,6 +51,7 @@ public class HomeFragment extends Fragment implements ItemClickListener {
             if (fetchedMovieList.second) {
                 adapter = new MyAdapter();
                 binding.recyclerView.setAdapter(adapter);
+                adapter.setClickListener(this);
             }
             this.fetchedMovieList = fetchedMovieList.first;
             adapter.addItems(this.fetchedMovieList);
