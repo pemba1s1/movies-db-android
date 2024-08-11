@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     MovieViewModel viewModel;
+    NavController navController;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home, R.id.navigation_favorite)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
     }
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
                     return false;
                 }
                 viewModel.setSearchQuery(query);
+                navController.navigate(R.id.navigation_home);
                 return false;
             }
 

@@ -48,6 +48,12 @@ public class HomeFragment extends Fragment implements ItemClickListener {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerView.setVisibility(View.GONE);
         viewModel.getFetchedMovieList().observe(getViewLifecycleOwner(), fetchedMovieList -> {
+            if (fetchedMovieList.first == null) {
+                binding.progressBar.setVisibility(View.GONE);
+                binding.recyclerView.setVisibility(View.GONE);
+                binding.noResult.setVisibility(View.VISIBLE);
+                return;
+            }
             if (this.fetchedMovieList == null) {
                 this.fetchedMovieList = viewModel.getMovieList().getValue();
             }
@@ -61,6 +67,7 @@ public class HomeFragment extends Fragment implements ItemClickListener {
             adapter.addItems(fetchedMovieList.first);
             binding.progressBar.setVisibility(View.GONE);
             binding.recyclerView.setVisibility(View.VISIBLE);
+            binding.noResult.setVisibility(View.GONE);
         });
 
         binding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {

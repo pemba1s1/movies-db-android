@@ -48,6 +48,7 @@ public class MovieViewModel extends ViewModel {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final CollectionReference collectionReference = db.collection("Favourite");
     private Integer page = 1;
+    private Integer totalPages = 1;
 
     public MovieViewModel() {
         mSearch = new MutableLiveData<>("Superman");
@@ -98,14 +99,16 @@ public class MovieViewModel extends ViewModel {
                     final String responseData = response.body().string();
                     try {
                         JSONObject json = new JSONObject(responseData);
+                        int totalResults = json.getInt("totalResults");
+                        totalPages = (int) Math.ceil(totalResults / 10.0);
                         Gson gson = new Gson();
                         Type movieListType = new TypeToken<List<Movie>>() {}.getType();
                         List<Movie> movies = gson.fromJson(json.getString("Search"), movieListType);
                         isLoadingLiveData.postValue(false);
                         callback.onSuccess(movies);
                     } catch (JSONException e) {
+                        isLoadingLiveData.postValue(false);
                         callback.onFailure(e);
-                        throw new RuntimeException(e);
                     }
                 }
             }
@@ -124,7 +127,7 @@ public class MovieViewModel extends ViewModel {
             }
             @Override
             public void onFailure(Exception e) {
-
+                mFetchedMovieList.postValue(new Pair<>(null, false));
             }
         });
 
@@ -132,6 +135,9 @@ public class MovieViewModel extends ViewModel {
 
     public void loadMore() {
         page++;
+        if (page > totalPages) {
+            return;
+        }
         String apiKey = BuildConfig.API_KEY;
         String url = "https://www.omdbapi.com/?apikey=" + apiKey + "&type=movie&s=" + mSearch.getValue()+"&page=" + page;
         makeRequest(url, new MovieListCallback() {
@@ -145,7 +151,7 @@ public class MovieViewModel extends ViewModel {
             }
             @Override
             public void onFailure(Exception e) {
-
+                mFetchedMovieList.postValue(new Pair<>(null, false));
             }
         });
     }

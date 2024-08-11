@@ -43,6 +43,12 @@ public class FavoriteFragment extends Fragment implements ItemClickListener {
         binding.progressBar.setVisibility(View.VISIBLE);
         binding.recyclerView.setVisibility(View.GONE);
         viewModel.getFavoriteMovieList().observe(getViewLifecycleOwner(), fetchedMovieList -> {
+            if (fetchedMovieList.isEmpty()) {
+                binding.noResult.setVisibility(View.VISIBLE);
+                binding.recyclerView.setVisibility(View.GONE);
+                binding.progressBar.setVisibility(View.GONE);
+                return;
+            }
             this.favMovieList = new ArrayList<>();
             adapter = new MyAdapter();
             binding.recyclerView.setAdapter(adapter);
@@ -50,6 +56,7 @@ public class FavoriteFragment extends Fragment implements ItemClickListener {
             adapter.addItems(fetchedMovieList);
             adapter.setClickListener(this);
             binding.progressBar.setVisibility(View.GONE);
+            binding.noResult.setVisibility(View.GONE);
             binding.recyclerView.setVisibility(View.VISIBLE);
         });
 
