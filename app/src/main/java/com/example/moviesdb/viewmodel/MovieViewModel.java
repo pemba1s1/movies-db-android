@@ -47,7 +47,7 @@ public class MovieViewModel extends ViewModel {
     private Integer page = 1;
 
     public MovieViewModel() {
-        mSearch = new MutableLiveData<String>();
+        mSearch = new MutableLiveData<String>("Superman");
         mMovieList = new MutableLiveData<List<Movie>>();
         mMovieId = new MutableLiveData<String>();
         mMovieDetail = new MutableLiveData<Movie>();

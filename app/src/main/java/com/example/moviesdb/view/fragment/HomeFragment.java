@@ -20,6 +20,7 @@ import com.example.moviesdb.MyAdapter;
 import com.example.moviesdb.R;
 import com.example.moviesdb.databinding.FragmentHomeBinding;
 import com.example.moviesdb.model.Movie;
+import com.example.moviesdb.view.MainActivity;
 import com.example.moviesdb.viewmodel.MovieViewModel;
 
 import java.util.ArrayList;
@@ -40,8 +41,9 @@ public class HomeFragment extends Fragment implements ItemClickListener {
                              ViewGroup container, Bundle savedInstanceState) {
         viewModel = new ViewModelProvider(requireActivity()).get(MovieViewModel.class);
 
-        viewModel.setSearchQuery("Superman");
-        viewModel.searchMovie("Superman");
+        viewModel.getSearchQuery().observe(getViewLifecycleOwner(), query -> {
+            viewModel.searchMovie(query);
+        });
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         navController = NavHostFragment.findNavController(this);

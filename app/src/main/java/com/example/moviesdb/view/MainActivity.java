@@ -89,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
                     return false;
                 }
                 viewModel.setSearchQuery(query);
-                viewModel.searchMovie(query);
                 return false;
             }
 
