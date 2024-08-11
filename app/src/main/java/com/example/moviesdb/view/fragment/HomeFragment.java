@@ -53,6 +53,7 @@ public class HomeFragment extends Fragment implements ItemClickListener {
             }
             if (fetchedMovieList.second || adapter == null) {
                 adapter = new MyAdapter();
+                this.fetchedMovieList = new ArrayList<>();
                 binding.recyclerView.setAdapter(adapter);
                 adapter.setClickListener(this);
             }
